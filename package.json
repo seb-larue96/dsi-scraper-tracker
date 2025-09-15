@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "migration:create": "npx mikro-orm migration:create",
+    "migration:create": "npm run build && npx mikro-orm migration:create",
     "migration:up": "npx mikro-orm migration:up",
     "migration:down": "npx mikro-orm migration:down",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
