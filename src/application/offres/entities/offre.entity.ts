@@ -23,6 +23,9 @@ export class Offre {
     @Property()
     urlSite: string;
 
+    @Property()
+    urlScrapper: string;
+
     @Property({ type: 'date' })
     scrapedAt: Date;
 }

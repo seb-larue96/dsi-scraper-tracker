@@ -74,6 +74,16 @@
           "length": 255,
           "mappedType": "string"
         },
+        "url_scrapper": {
+          "name": "url_scrapper",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
         "scraped_at": {
           "name": "scraped_at",
           "type": "date",
