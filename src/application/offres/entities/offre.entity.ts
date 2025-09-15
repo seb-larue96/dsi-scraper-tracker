@@ -20,11 +20,11 @@ export class Offre {
     @Property({ type: 'decimal', precision: 10, scale: 2, nullable: true })
     prix?: string;
 
-    @Property()
-    urlSite: string;
+    @Property({ nullable: true })
+    urlSite?: string;
 
     @Property()
-    urlScrapper: string;
+    urlScraper: string;
 
     @Property({ type: 'date' })
     scrapedAt: Date;
