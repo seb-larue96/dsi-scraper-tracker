@@ -70,12 +70,12 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 255,
           "mappedType": "string"
         },
-        "url_scrapper": {
-          "name": "url_scrapper",
+        "url_scraper": {
+          "name": "url_scraper",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
