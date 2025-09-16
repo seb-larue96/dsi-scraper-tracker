@@ -2,11 +2,12 @@ import { MySqlDriver } from '@mikro-orm/mysql';
 import { MikroOrmModuleOptions } from '@mikro-orm/nestjs';
 import * as dotenv from 'dotenv';
 import { Offre } from 'src/application/offres/entities/offre.entity';
+import { Log } from 'src/logger/entities/log.entity';
 
 dotenv.config();
 
 const config: MikroOrmModuleOptions = {
-  entities: [Offre],
+  entities: [Log, Offre],
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   user: process.env.DB_USER,
