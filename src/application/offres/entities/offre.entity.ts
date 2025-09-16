@@ -17,7 +17,7 @@ export class Offre {
     @Property({ nullable: true })
     type?: string;
 
-    @Property({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+    @Property({ nullable: true })
     prix?: string;
 
     @Property({ nullable: true })

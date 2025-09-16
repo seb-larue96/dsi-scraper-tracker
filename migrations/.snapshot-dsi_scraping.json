@@ -135,14 +135,13 @@
         },
         "prix": {
           "name": "prix",
-          "type": "numeric(10,2)",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "precision": 10,
-          "scale": 2,
-          "mappedType": "decimal"
+          "length": 255,
+          "mappedType": "string"
         },
         "url_site": {
           "name": "url_site",
