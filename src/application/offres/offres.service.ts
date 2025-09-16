@@ -56,10 +56,7 @@ export class OffresService {
     const response = await firstValueFrom(this.httpService.get(`${this.apiUrl}/syncOffers`));
     const rawData = response.data;
 
-    if (!rawData) {
-      this.logger.info(`n8n webhook returned ${rawData.length} offers`, 'OffresService');
-      return [];
-    } 
+    if (!rawData) return [];
 
     return rawData.map((item: Offre) => forkedEm.create(Offre, item));
   }

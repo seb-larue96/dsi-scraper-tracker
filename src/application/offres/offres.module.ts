@@ -4,6 +4,7 @@ import { OffresController } from './offres.controller';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Offre } from './entities/offre.entity';
 import { HttpModule } from '@nestjs/axios';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { HttpModule } from '@nestjs/axios';
     HttpModule,
   ],
   controllers: [OffresController],
-  providers: [OffresService],
+  providers: [OffresService, LoggerService],
   exports: [OffresService],
 })
 export class OffresModule {}
