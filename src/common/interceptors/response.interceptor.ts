@@ -14,7 +14,8 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
             tap(() => {
                 const { method, url } = request;
                 this.logger.info(
-                    `${method} ${url} responded successfully`
+                    `${method} ${url} responded successfully`,
+                    'ResponseInterceptor'
                 )
             }),
             map((data) => {
