@@ -1,35 +1,34 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import { Request, Response } from 'express';
+import { LoggerService } from "src/logger/logger.service";
 
 @Catch(HttpException)
 export class GlobalExceptionFilter implements ExceptionFilter {
-    catch(exception: HttpException, host: ArgumentsHost): void {
+    constructor(private readonly logger: LoggerService) {}
+
+    async catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
 
-        let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message = 'An unexpected error occurred.';
-        let error: any = exception;
+        const status = 
+            exception instanceof HttpException
+                ? exception.getStatus()
+                : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        if (exception instanceof HttpException) {
-            statusCode = exception.getStatus();
-            const res = exception.getResponse();
+        const message = exception instanceof HttpException ? exception.getResponse() : 'An unexpected error occurred.';
 
-            if (typeof res === 'string') {
-            message = res;
-            } else if (typeof res === 'object') {
-            message = (res as any).message || message;
-            error = (res as any).error || error;
-            }
-        }
+        await this.logger.error(
+            `${request.method} ${request.url} failed with status ${status}`,
+            'GlobalExceptionFilter',
+            exception.stack,
+        );
 
-        response.status(statusCode).json({
+        response.status(status).json({
             success: false,
             message,
-            error: error?.message || String(error),
             path: request.url,
-            statusCode,
+            status,
             timestamp: new Date().toISOString(),
         });
     }
