@@ -1,10 +1,12 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/mysql';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { HttpService } from '@nestjs/axios';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { HttpService } from '@nestjs/axios';
+import { LoggerService } from 'src/logger/logger.service';
 import { Offre } from './entities/offre.entity';
 import { FindOfferDto } from './dto/find-offer.dto';
+import { mapToFindOfferDto } from './mapping/offre.mapper';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -17,6 +19,7 @@ export class OffresService {
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
+    private readonly logger: LoggerService
   ) {
     this.apiUrl = this.configService.get<string>('API_URL');
     if (!this.apiUrl) {
@@ -26,16 +29,19 @@ export class OffresService {
 
   async fetchAndStore() {
     try {
-      const offres = await this.fetchExternalOffers();
-      await this.saveOffers(offres);
+      const forkedEm = this.em.fork();
+      const offres = await this.fetchExternalOffers(forkedEm);
+      await this.saveOffers(forkedEm, offres);
+      this.logger.info(`Successfully synced ${offres.length} offers`, 'OffresService');
     } catch (error) {
-      throw error;
+      this.logger.error('Failed to fetch and store offers', 'OffresService', error.stack);
+      throw new InternalServerErrorException('Offer sync failed');
     }
   }
 
   async findAll(): Promise<FindOfferDto[]> {
     const offers = await this.offreRepository.findAll();
-    return offers.map(this.mapToFindOfferDto);
+    return offers.map(mapToFindOfferDto);
   }
 
   async findOne(id: number) {
@@ -43,34 +49,23 @@ export class OffresService {
 
     if (!offer) throw new NotFoundException(`Offre with ID ${id} not found`);
 
-    return this.mapToFindOfferDto(offer);
+    return mapToFindOfferDto(offer);
   }
 
-  private async fetchExternalOffers(): Promise<Offre[]> {
+  private async fetchExternalOffers(forkedEm: EntityManager): Promise<Offre[]> {
     const response = await firstValueFrom(this.httpService.get(`${this.apiUrl}/syncOffers`));
     const rawData = response.data;
 
-    if (!rawData) return [];
+    if (!rawData) {
+      this.logger.info(`n8n webhook returned ${rawData.length} offers`, 'OffresService');
+      return [];
+    } 
 
-    return rawData.map((item: Offre) => this.em.create(Offre, item));
+    return rawData.map((item: Offre) => forkedEm.create(Offre, item));
   }
 
-  private async saveOffers(offres: Offre[]) {
-    this.em.persist(offres);
-    await this.em.flush();
-  }
-
-  private mapToFindOfferDto(offer: Offre): FindOfferDto {
-    return {
-      id: offer.id,
-      key: offer.key,
-      destination: offer.destination,
-      hotel: offer.hotel,
-      type: offer.type,
-      prix: offer.prix,
-      urlSite: offer.urlSite,
-      urlScraper: offer.urlScraper,
-      scrapedAt: offer.scrapedAt.toString()
-    }
+  private async saveOffers(forkedEm: EntityManager, offres: Offre[]) {
+    forkedEm.persist(offres);
+    await forkedEm.flush();
   }
 }
