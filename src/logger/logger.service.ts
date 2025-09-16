@@ -7,6 +7,8 @@ export class LoggerService {
     constructor(private readonly em: EntityManager) {}
 
     async log(level: 'info' | 'error', message: string, context?: string, stack?: string) {
+        const forkedEm = this.em.fork();
+
         const log = new Log();
         log.level = level;
         log.message = message;
@@ -14,8 +16,8 @@ export class LoggerService {
         log.stack = stack;
         log.timestamp = new Date();
 
-        this.em.persist(log);
-        await this.em.flush();
+        forkedEm.persist(log);
+        await forkedEm.flush();
     }
 
     async info(message: string, context?: string) {
