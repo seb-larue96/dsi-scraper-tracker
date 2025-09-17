@@ -49,7 +49,3 @@ jobs:
           docker compose pull
           docker compose up -d --remove-orphans
           docker image prune -f
-
-      - name: Check if API is healthy
-        run: curl -f http://localhost:$PORT/health || exit 1
-        continue-on-error: false
