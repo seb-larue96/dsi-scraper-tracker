@@ -3,12 +3,12 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy tsconfig BEFORE source (ts-node will need this for MikroORM migrations)
+# Copy configuration files
 COPY tsconfig*.json ./
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
 
 # Copy source
 COPY . .
