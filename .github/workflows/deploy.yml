@@ -6,7 +6,8 @@ on:
             - master
 
 env: 
-    NETWORK_NAME: ${{ vars.NETWORK_NAME }}   
+    NETWORK_NAME: ${{ vars.NETWORK_NAME }}
+    DOMAIN: ${{ vars.DOMAIN }}
     
 jobs:
   deploy:
