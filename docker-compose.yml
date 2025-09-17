@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    ports:
+      -3000:3000
     networks:
       - default_net
       - traefik
@@ -22,7 +24,7 @@ services:
       - traefik.http.routers.${NETWORK_NAME}.entrypoints=websecure
       - traefik.http.routers.${NETWORK_NAME}.tls.certresolver=myresolver
 
-      - traefik.http.services.${NETWORK_NAME}-svc.loadbalancer.server.port=80
+      - traefik.http.services.${NETWORK_NAME}-svc.loadbalancer.server.port=3000
 
 networks:
   default_net:
