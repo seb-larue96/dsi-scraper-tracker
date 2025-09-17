@@ -40,12 +40,14 @@ jobs:
           DOMAIN=$DOMAIN
           EOF
 
-      - name: Pull & Restart Docker stack
-        run: |
-          set -e
-          docker compose pull
-          docker compose up -d --remove-orphans
-          docker image prune -f
+      - name: Stop and remove existing containers
+        run: docker compose down --remove-orphans
+
+      - name: Build Docker containers
+        run: docker compose build --no-cache
 
       - name: Run MikroORM Migrations
-        run: docker compose run --rm api npx mikro-orm migration:up
+        run: docker compose run --rm api npm run migration:up
+
+      - name: Start services
+        run: docker compose up -d --remove-orphans
