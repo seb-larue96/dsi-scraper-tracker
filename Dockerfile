@@ -7,6 +7,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Copy tsconfig BEFORE source (ts-node will need this for MikroORM migrations)
+COPY tsconfig*.json ./
+
 # Copy source
 COPY . .
 
@@ -21,8 +24,8 @@ WORKDIR /app
 # Copy only necessary files from builder
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-COPY package*.json ./
-COPY tsconfig*.json ./ 
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/tsconfig*.json ./ 
 
 # Expose app port (optional, docs only)
 EXPOSE 3000
