@@ -22,6 +22,7 @@ jobs:
             echo "DB_NAME=${{ vars.DB_NAME }}" >> .env
             echo "DB_USER=${{ vars.DB_USER }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "API_URL=${{ vars.API_URL }}" >> .env
             echo "NETWORK_NAME=${{ vars.NETWORK_NAME }}" >> .env
             echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
         
