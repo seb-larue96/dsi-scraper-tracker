@@ -48,4 +48,4 @@ jobs:
           docker image prune -f
 
       - name: Run MikroORM Migrations
-        run: docker compose run --rm api npm run migration:up
+        run: docker compose run --rm api npx mikro-orm migration:up
