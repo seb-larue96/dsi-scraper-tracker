@@ -1,4 +1,4 @@
-name: Deploy DSI Scraper Tracker API
+name: Deploy DSI Scraper Tracker API - Test
 
 on:
     push:
