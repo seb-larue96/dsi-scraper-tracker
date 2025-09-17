@@ -1,4 +1,4 @@
-name: Deploy DSI Scraper Tracker API - Test
+name: Deploy DSI Scraper Tracker API
 
 on:
     push:
@@ -9,25 +9,45 @@ jobs:
   deploy:
     runs-on: self-hosted
 
+    env:
+      NODE_ENV: ${{ vars.NODE_ENV }}
+      PORT: ${{ vars.PORT }}
+      DB_HOST: ${{ vars.DB_HOST }}
+      DB_PORT: ${{ vars.DB_PORT }}
+      DB_NAME: ${{ vars.DB_NAME }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      API_URL: ${{ vars.API_URL }}
+      NETWORK_NAME: ${{ vars.NETWORK_NAME }}
+      DOMAIN: ${{ vars.DOMAIN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         
       - name: Create .env file from GitHub Secrets
         run: |
-            echo "NODE_ENV=${{ vars.NODE_ENV }}" >> .env
-            echo "PORT=${{ vars.PORT }}" >> .env
-            echo "DB_HOST=${{ vars.DB_HOST }}" >> .env
-            echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
-            echo "DB_NAME=${{ vars.DB_NAME }}" >> .env
-            echo "DB_USER=${{ vars.DB_USER }}" >> .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "API_URL=${{ vars.API_URL }}" >> .env
-            echo "NETWORK_NAME=${{ vars.NETWORK_NAME }}" >> .env
-            echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
+          cat <<EOF > .env
+          NODE_ENV=$NODE_ENV
+          PORT=$PORT
+          DB_HOST=$DB_HOST
+          DB_PORT=$DB_PORT
+          DB_NAME=$DB_NAME
+          DB_USER=$DB_USER
+          DB_PASSWORD=$DB_PASSWORD
+          API_URL=$API_URL
+          NETWORK_NAME=$NETWORK_NAME
+          DOMAIN=$DOMAIN
+          EOF
         
-      - name: Build and Deploy with Docker Compose
-        run: |
-          docker compose down
-          docker compose build --no-cache
-          docker compose up -d
+      - name: Stop and clean up previous Docker containers
+        run: docker compose down --remove-orphans
+
+      - name: Build Docker containers
+        run: docker compose build --no-cache
+
+      - name: Run MikroORM Migrations
+        run: docker compose run --rm api npm run migration:up
+
+      - name: Start services
+        run: docker compose up -d --remove-orphans
