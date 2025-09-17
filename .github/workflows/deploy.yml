@@ -8,6 +8,7 @@ on:
 env: 
     NETWORK_NAME: ${{ vars.NETWORK_NAME }}
     DOMAIN: ${{ vars.DOMAIN }}
+
     
 jobs:
   deploy:
@@ -16,7 +17,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
+      - name: Create .env file from GitHub Secrets
+        run: |
+            echo "DB_HOST=${{ vars.DB_HOST }}" >> .env
+            echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
+            echo "DB_NAME=${{ vars.DB_NAME }}" >> .env
+            echo "DB_USER=${{ vars.DB_USER }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+        
       - name: Build and Deploy with Docker Compose
         run: |
           docker compose down
