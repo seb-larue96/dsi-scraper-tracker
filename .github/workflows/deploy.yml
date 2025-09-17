@@ -5,11 +5,6 @@ on:
         branches:
             - master
 
-env: 
-    NETWORK_NAME: ${{ vars.NETWORK_NAME }}
-    DOMAIN: ${{ vars.DOMAIN }}
-
-    
 jobs:
   deploy:
     runs-on: self-hosted
@@ -25,6 +20,8 @@ jobs:
             echo "DB_NAME=${{ vars.DB_NAME }}" >> .env
             echo "DB_USER=${{ vars.DB_USER }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "NETWORK_NAME=${{ vars.NETWORK_NAME }}" >> .env
+            echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
         
       - name: Build and Deploy with Docker Compose
         run: |
