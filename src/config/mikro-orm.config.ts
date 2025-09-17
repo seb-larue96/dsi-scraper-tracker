@@ -16,7 +16,9 @@ const config: MikroOrmModuleOptions = {
   driver: MySqlDriver,
   migrations: {
     tableName: 'mo_migrations',
-    path: './migrations',
+    path: process.env.NODE_ENV === 'production' ? './dist/migrations' : './src/migrations',
+    pathTs: './src/migrations',
+    emit: 'ts',
   },
 };
 
