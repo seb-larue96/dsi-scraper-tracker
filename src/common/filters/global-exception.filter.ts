@@ -29,7 +29,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             message,
             path: request.url,
             status,
-            timestamp: new Date().toISOString(),
+            timestamp: new Date(),
         });
     }
 }
