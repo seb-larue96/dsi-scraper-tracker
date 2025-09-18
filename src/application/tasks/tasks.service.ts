@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OffresService } from '../offres/offres.service';
 import { LoggerService } from 'src/logger/logger.service';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class TasksService {
@@ -12,7 +12,7 @@ export class TasksService {
         private readonly logger: LoggerService
     ) {}
 
-    @Cron('0 19 * * 1')
+    @Cron(CronExpression.EVERY_10_MINUTES)
     async cronFetchAndStore() {
         await this.logger.info('Starting scheduled fetchAndStore()', this.context);
 
