@@ -103,6 +103,16 @@
           "length": 255,
           "mappedType": "string"
         },
+        "package": {
+          "name": "package",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
+        },
         "destination": {
           "name": "destination",
           "type": "varchar(255)",
@@ -135,6 +145,26 @@
         },
         "prix": {
           "name": "prix",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "remise": {
+          "name": "remise",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "promo": {
+          "name": "promo",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
