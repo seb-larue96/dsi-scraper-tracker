@@ -9,6 +9,9 @@ export class Offre {
     key: string;
 
     @Property({ nullable: true })
+    package?: string;
+
+    @Property({ nullable: true })
     destination?: string;
 
     @Property({ nullable: true })
@@ -19,6 +22,12 @@ export class Offre {
 
     @Property({ nullable: true })
     prix?: string;
+
+    @Property({ nullable: true })
+    remise?: string;
+
+    @Property({ nullable: true })
+    promo?: string;
 
     @Property({ nullable: true })
     urlSite?: string;
