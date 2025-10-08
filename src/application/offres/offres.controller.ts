@@ -7,13 +7,6 @@ import { FindOfferDto } from './dto/find-offer.dto';
 export class OffresController {
   constructor(private readonly offresService: OffresService) {}
 
-  @Post('syncOffers')
-  @ApiOperation({ summary: 'Fetch and store offers from external API' })
-  @ApiResponse({ status: 201, description: 'Offers synced successfully.' })
-  fetchFromExternalApi() {
-    return this.offresService.fetchAndStore();
-  }
-
   @Get('getOffers')
   @ApiOperation({ summary: 'Get all stored offers' })
   @ApiResponse({ status: 200, description: 'List of all offers', type: [FindOfferDto] })

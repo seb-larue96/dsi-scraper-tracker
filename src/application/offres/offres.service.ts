@@ -8,6 +8,7 @@ import { Offre } from './entities/offre.entity';
 import { FindOfferDto } from './dto/find-offer.dto';
 import { mapToFindOfferDto } from './mapping/offre.mapper';
 import { firstValueFrom } from 'rxjs';
+import { TokenResponseDto } from 'src/common/dto/token-reponse.dto';
 
 @Injectable()
 export class OffresService {
@@ -52,13 +53,35 @@ export class OffresService {
     return mapToFindOfferDto(offer);
   }
 
+  private async fetchToken(): Promise<TokenResponseDto> {
+    try {
+      const response = await firstValueFrom(this.httpService.get(`${this.apiUrl}/getToken`));
+      return response.data;
+    } catch(error) {
+      this.logger.error('Failed to fetch token', 'OffresServices', error.stack);
+      throw new InternalServerErrorException('Failed to fetch token');
+    }
+  }
+
   private async fetchExternalOffers(forkedEm: EntityManager): Promise<Offre[]> {
-    const response = await firstValueFrom(this.httpService.get(`${this.apiUrl}/syncOffers`));
-    const rawData = response.data;
+    const responseToken = (await this.fetchToken()).token;
+    
+    try {
+      const headersRequest = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${responseToken}`
+      }
 
-    if (!rawData) return [];
+      const response = await firstValueFrom(this.httpService.get(`${this.apiUrl}/syncOffers`, { headers: headersRequest }));
+      const rawData = response.data;
 
-    return rawData.map((item: Offre) => forkedEm.create(Offre, item));
+      if (!rawData) return [];
+
+      return rawData.map((item: Offre) => forkedEm.create(Offre, item));
+    } catch(error) {
+      this.logger.error('Failed to fetch external offers', 'OffresService', error.stack)
+      throw new InternalServerErrorException('Failed to fetch external offers');
+    }
   }
 
   private async saveOffers(forkedEm: EntityManager, offres: Offre[]) {
