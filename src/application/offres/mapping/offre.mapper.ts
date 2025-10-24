@@ -4,13 +4,11 @@ import { FindOfferDto } from "../dto/find-offer.dto";
 export function mapToFindOfferDto(offer: Offre): FindOfferDto {
     return {
         id: offer.id,
-        key: offer.key,
-        destination: offer.destination,
-        hotel: offer.hotel,
+        key: offer.cle_composee,
         type: offer.type,
         prix: offer.prix,
-        urlSite: offer.urlSite,
-        urlScraper: offer.urlScraper,
-        scrapedAt: offer.scrapedAt.toString()
+        urlScraped: offer.url_scraped,
+        urlSource: offer.url_source,
+        dateScraping: offer.date_scraping.toString()
     }
 }

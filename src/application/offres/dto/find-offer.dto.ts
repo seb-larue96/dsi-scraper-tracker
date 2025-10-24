@@ -18,13 +18,13 @@ export class FindOfferDto {
     
     @ApiProperty()
     prix?: string;
-    
-    @ApiProperty()
-    urlSite?: string;
 
     @ApiProperty()
-    urlScraper: string;
+    urlScraped: string;
     
     @ApiProperty()
-    scrapedAt: string;
+    urlSource?: string;
+    
+    @ApiProperty()
+    dateScraping: string;
 }

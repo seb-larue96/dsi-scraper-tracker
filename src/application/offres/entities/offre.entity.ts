@@ -1,4 +1,7 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Collection, Entity, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
+import { Destination } from "src/application/destinations/entities/destination.entity";
+import { Hotel } from "src/application/hotels/entities/hotel.entity";
+import { OffreDate } from "src/application/offres_dates/entities/offre_date.entity";
 
 @Entity()
 export class Offre {
@@ -6,22 +9,16 @@ export class Offre {
     id: number;
   
     @Property()
-    key: string;
+    cle_composee: string;
 
-    @Property({ nullable: true })
-    package?: string;
+    @Property()
+    package: string;
 
-    @Property({ nullable: true })
-    destination?: string;
+    @Property()
+    type: string;
 
-    @Property({ nullable: true })
-    hotel?: string;
-
-    @Property({ nullable: true })
-    type?: string;
-
-    @Property({ nullable: true })
-    prix?: string;
+    @Property()
+    prix: string;
 
     @Property({ nullable: true })
     remise?: string;
@@ -29,12 +26,24 @@ export class Offre {
     @Property({ nullable: true })
     promo?: string;
 
-    @Property({ nullable: true })
-    urlSite?: string;
+    @Property()
+    url_scraped: string;
 
     @Property()
-    urlScraper: string;
+    url_source: string;
 
-    @Property({ type: 'date' })
-    scrapedAt: Date;
+    @Property({ type: 'datetime' })
+    date_scraping: Date;
+
+    @Property({ type: 'datetime', onCreate: () => new Date() })
+    date_cree: Date;
+
+    @OneToMany(() => Destination, destination => destination.offre)
+    destinations = new Collection<Destination>(this);
+
+    @OneToMany(() => Hotel, hotel => hotel.offre)
+    hotels = new Collection<Hotel>(this);
+
+    @OneToMany(() => OffreDate, offreDate => offreDate.offre)
+    offreDates = new Collection<OffreDate>(this);
 }
