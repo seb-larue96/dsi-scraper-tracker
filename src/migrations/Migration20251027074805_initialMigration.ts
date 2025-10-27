@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20251024100957_initialMigration extends Migration {
+export class Migration20251027074805_initialMigration extends Migration {
 
   override async up(): Promise<void> {
     this.addSql(`create table \`log\` (\`id\` int unsigned not null auto_increment primary key, \`level\` varchar(255) not null, \`message\` varchar(255) not null, \`context\` text null, \`stack\` text null, \`timestamp\` datetime not null) default character set utf8mb4 engine = InnoDB;`);
