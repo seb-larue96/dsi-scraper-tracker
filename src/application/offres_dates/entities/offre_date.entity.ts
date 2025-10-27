@@ -6,7 +6,7 @@ export class OffreDate {
     @PrimaryKey()
     id: number;
 
-    @ManyToOne(() => Offre)
+    @ManyToOne(() => Offre, { hidden: true })
     offre: Offre;
 
     @Property({ nullable: true })
