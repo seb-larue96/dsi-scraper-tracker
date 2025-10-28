@@ -1,98 +1,135 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# DSI - Scraper Tracker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Ce dépôt contient l'API backend du projet « DSI - Scraper Tracker », développée avec NestJS et MikroORM (MySQL).
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Service REST responsable de la récupération (scraping/synchronisation) d'offres depuis une API externe, du stockage en base de données et de l'exposition d'un API pour consulter ces offres.
 
-## Project setup
+Technologies principales :
+- Node.js / TypeScript
+- NestJS
+- MikroORM (MySQL)
+- Swagger pour la documentation de l'API
 
-```bash
-$ npm install
+## Prérequis
+
+- Node.js 18+ / npm
+- MySQL (ou conteneur compatible)
+- Variables d'environnement configurées (voir section `Variables d'environnement`)
+
+## Variables d'environnement
+
+Les variables d'environnement importantes :
+
+- `PORT` : port d'écoute de l'application (par défaut 3000)
+- `API_URL` : URL de l'API externe à interroger pour récupérer les offres
+- `DB_HOST` : hôte MySQL
+- `DB_PORT` : port MySQL
+- `DB_USER` : utilisateur MySQL
+- `DB_PASSWORD` : mot de passe MySQL
+- `DB_NAME` : nom de la base de données
+
+Ces variables peuvent être placées dans un fichier `.env` à la racine du projet.
+
+## Installation
+
+1. Cloner le dépôt
+2. Installer les dépendances
+
+```powershell
+npm ci
 ```
 
-## Compile and run the project
+## Commandes utiles
 
-```bash
-# development
-$ npm run start
+- Démarrer en développement (watch)
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```powershell
+npm run start:dev
 ```
 
-## Run tests
+- Démarrer en production (après build)
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```powershell
+npm run build
+npm run start:prod
 ```
 
-## Deployment
+- Lancer les tests
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```powershell
+npm run test
+npm run test:e2e
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+- Formater le code
 
-## Resources
+```powershell
+npm run format
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Migrations (MikroORM)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Création d'une migration :
 
-## Support
+```powershell
+npm run migration:create
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Appliquer les migrations :
 
-## Stay in touch
+```powershell
+npm run migration:up
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Revenir en arrière :
 
-## License
+```powershell
+npm run migration:down
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+> Les migrations utilisent la configuration présente dans `src/config/mikro-orm.config.ts`.
+
+## Docker
+
+Un `Dockerfile` est présent pour builder et exécuter l'application. Un `docker-compose.yml` peut aussi être fourni pour lancer l'application et la base de données (vérifier le fichier à la racine).
+
+## Documentation de l'API
+
+Une documentation Swagger est exposée par l'application après démarrage à :
+
+```
+GET /api
+```
+
+## Structure du projet (extrait)
+
+- `src/main.ts` : point d'entrée, configuration globale (Swagger, filtres/intercepteurs)
+- `src/app.module.ts` : module racine
+- `src/application/offres` : logique métier concernant les offres
+- `src/application/destinations`, `hotels`, `offres_dates` : entités et services associés
+- `src/logger` : service de logging persistant
+- `src/config` : configurations (MikroORM, Swagger, intercepteurs, filtres)
+- `src/migrations` : migrations MikroORM
+
+## Fonctionnalités principales
+
+- Récupération d'un token depuis l'API externe (`API_URL`) puis synchronisation des offres
+- Mapping et persistance des entités : `Offre`, `Destination`, `Hotel`, `OffreDate`
+- Endpoints pour récupérer la liste des offres et une offre par ID
+- Logs persistants stockés via le service `LoggerService`
+
+## Développement & contribution
+
+- Respecter les règles d'ESLint/Prettier (commande `npm run lint` et `npm run format`).
+- Les tests unitaires et e2e sont gérés avec Jest.
+
+## Remarques
+
+- Vérifier les variables d'environnement avant de lancer l'application (notamment `API_URL` et les variables de base de données).
+- La configuration des migrations est prête pour l'émission en TypeScript pendant le développement.
+
+## Licence
+
+Projet interne (voir le champ `license` dans `package.json`).
