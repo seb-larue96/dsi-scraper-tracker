@@ -36,7 +36,7 @@ export class OffresService {
     return offers.map(mapToFindOfferDto);
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<FindOfferDto> {
     const offer = await this.offreRepository.findOne({ id });
 
     if (!offer) throw new NotFoundException(`Offre with ID ${id} not found`);
