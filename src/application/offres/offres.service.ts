@@ -101,16 +101,16 @@ export class OffresService {
       date_cree: new Date(),
     });
 
-    if (item.destinations?.length) this.mapDestinations(item.destinations, offer);
-    if (item.hotels?.length) this.mapHotels(item.hotels, offer);
-    if (item.offresDates?.length) this.mapOffreDates(item.offresDates, offer);
+    if (item.destinations?.length) this.mapDestinations(item.destinations, offer, em);
+    if (item.hotels?.length) this.mapHotels(item.hotels, offer, em);
+    if (item.offresDates?.length) this.mapOffreDates(item.offresDates, offer, em);
 
     return offer;
   }
 
-  private mapDestinations(destinations: Destination[], offer: Offre): void {
+  private mapDestinations(destinations: Destination[], offer: Offre, em: EntityManager): void {
     destinations.forEach(destinationItem => {
-      const destination = this.em.create(Destination, {
+      const destination = em.create(Destination, {
         pays: destinationItem.pays,
         ville: destinationItem.ville,
         depart_retour: destinationItem.depart_retour || null,
@@ -120,9 +120,9 @@ export class OffresService {
     });
   }
 
-  private mapHotels(hotels: Hotel[], offer: Offre): void {
+  private mapHotels(hotels: Hotel[], offer: Offre, em: EntityManager): void {
     hotels.forEach(hotelItem => {
-      const hotel = this.em.create(Hotel, {
+      const hotel = em.create(Hotel, {
         nom: hotelItem.nom,
         etoiles: hotelItem.etoiles,
         offre: offer,
@@ -131,9 +131,9 @@ export class OffresService {
     });
   }
 
-  private mapOffreDates(offresDates: OffreDate[], offer: Offre): void {
+  private mapOffreDates(offresDates: OffreDate[], offer: Offre, em: EntityManager): void {
     offresDates.forEach(dateItem => {
-      const offreDate = this.em.create(OffreDate, {
+      const offreDate = em.create(OffreDate, {
         date_depart: dateItem.date_depart,
         date_retour: dateItem.date_retour,
         nb_jours: dateItem.nb_jours,
