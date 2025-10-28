@@ -12,10 +12,9 @@ export class TasksService {
         private readonly logger: LoggerService
     ) {}
 
-    @Cron(CronExpression.EVERY_DAY_AT_5PM)
+    @Cron(CronExpression.EVERY_MINUTE)
     async cronFetchAndStore() {
         await this.logger.info('Starting scheduled fetchAndStore()', this.context);
-
         try {
             await this.offresService.fetchAndStore();
             await this.logger.info('fetchAndStore() completed successfully', this.context);

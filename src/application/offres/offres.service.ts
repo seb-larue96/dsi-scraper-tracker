@@ -45,8 +45,9 @@ export class OffresService {
   }
 
   async fetchAndStore() {
+    const em = this.em.fork();
     try {
-      const offres = await this.fetchExternalOffers();
+      const offres = await this.fetchExternalOffers(em);
       this.logger.info(`Successfully synced ${offres.length} offers`, 'OffresService');
     } catch (error) {
       this.logger.error('Failed to fetch and store offers', 'OffresService', error.stack);
@@ -64,7 +65,7 @@ export class OffresService {
     }
   }
 
-  private async fetchExternalOffers(): Promise<Offre[]> {
+  private async fetchExternalOffers(em: EntityManager): Promise<Offre[]> {
     const { token } = await this.fetchToken();
     const headers = {
       'Content-Type': 'application/json',
@@ -72,16 +73,13 @@ export class OffresService {
     };
 
     try {
-      const response = await firstValueFrom(
-        this.httpService.get(`${this.apiUrl}/syncOffers`, { headers })
-      );
-
+      const response = await firstValueFrom(this.httpService.get(`${this.apiUrl}/syncOffers`, { headers }));
+      
       const data = response.data;
       if (!Array.isArray(data) || data.length === 0) return [];
 
-      const offers = data.map(item => this.mapOffer(item));
-      await this.em.persistAndFlush(offers);
-
+      const offers = data.map(item => this.mapOffer(item, em));
+      await em.persistAndFlush(offers);
       return offers;
     } catch (error) {
       this.logger.error('Failed to fetch external offers', 'OffresService', error.stack);
@@ -89,7 +87,7 @@ export class OffresService {
     }
   }
 
-  private mapOffer(item: any): Offre {
+  private mapOffer(item: any, em: EntityManager): Offre {
     const offer = this.em.create(Offre, {
       cle_composee: item.key,
       package: item.package,
@@ -110,7 +108,7 @@ export class OffresService {
     return offer;
   }
 
-  private mapDestinations(destinations: any[], offer: Offre): void {
+  private mapDestinations(destinations: Destination[], offer: Offre): void {
     destinations.forEach(destinationItem => {
       const destination = this.em.create(Destination, {
         pays: destinationItem.pays,
