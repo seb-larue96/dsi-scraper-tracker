@@ -22,5 +22,5 @@ export class OffreDate {
     mois_voyage?: string;
 
     @Property({ nullable: true })
-    annee_voyage?: number;
+    annee_voyage?: string;
 }

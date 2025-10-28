@@ -453,13 +453,13 @@
         },
         "annee_voyage": {
           "name": "annee_voyage",
-          "type": "int",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": null,
-          "mappedType": "integer"
+          "length": 255,
+          "mappedType": "string"
         }
       },
       "name": "offre_date",
