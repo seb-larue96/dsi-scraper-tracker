@@ -88,7 +88,7 @@ export class OffresService {
   }
 
   private mapOffer(item: any, em: EntityManager): Offre {
-    const offer = this.em.create(Offre, {
+    const offer = em.create(Offre, {
       cle_composee: item.key,
       package: item.package,
       type: item.type,
