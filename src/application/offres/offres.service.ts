@@ -32,12 +32,12 @@ export class OffresService {
   }
 
   async findAll(): Promise<FindOfferDto[]> {
-    const offers = await this.offreRepository.findAll();
+    const offers = await this.offreRepository.findAll({ populate: ['destinations', 'hotels', 'offreDates'] });
     return offers.map(mapToFindOfferDto);
   }
 
   async findOne(id: number): Promise<FindOfferDto> {
-    const offer = await this.offreRepository.findOne({ id });
+    const offer = await this.offreRepository.findOne(id, { populate: ['destinations', 'hotels', 'offreDates'] });
 
     if (!offer) throw new NotFoundException(`Offre with ID ${id} not found`);
 

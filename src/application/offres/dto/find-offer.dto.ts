@@ -8,10 +8,29 @@ export class FindOfferDto {
     key: string;
 
     @ApiProperty()
-    destination?: string;
+    destination: {
+        id: number;
+        pays?: string;
+        ville?: string;
+        depart_retour?: string;
+    }[];
     
     @ApiProperty()
-    hotel?: string;
+    hotel: {
+        id: number;
+        nom?: string;
+        etoiles?: number;
+    }[];
+
+    @ApiProperty()
+    offreDate: {
+        id: number;
+        date_depart?: string;
+        date_retour?: string;
+        nb_jours: number;
+        mois_voyage?: string;
+        annee_voyage?: string;
+    }[];
     
     @ApiProperty()
     type?: string;
