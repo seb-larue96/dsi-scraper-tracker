@@ -103,6 +103,16 @@
           "length": 255,
           "mappedType": "string"
         },
+        "cle_doublon": {
+          "name": "cle_doublon",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
         "package": {
           "name": "package",
           "type": "varchar(255)",
