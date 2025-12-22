@@ -12,7 +12,7 @@ export class TasksService {
         private readonly logger: LoggerService
     ) {}
 
-    @Cron(CronExpression.EVERY_DAY_AT_5PM)
+    //@Cron(CronExpression.EVERY_DAY_AT_5PM)
     async cronFetchAndStore() {
         await this.logger.info('Starting scheduled fetchAndStore()', this.context);
         try {
