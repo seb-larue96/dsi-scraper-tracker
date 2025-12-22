@@ -8,6 +8,9 @@ export class FindOfferDto {
     key: string;
 
     @ApiProperty()
+    duplicateKey: string;
+
+    @ApiProperty()
     destination: {
         id: number;
         pays?: string;
@@ -30,6 +33,14 @@ export class FindOfferDto {
         nb_jours: number;
         mois_voyage?: string;
         annee_voyage?: string;
+    }[];
+
+    @ApiProperty()
+    offrePrixHistorique: {
+        id: number;
+        prix: string;
+        devise: string;
+        date_scraped: string;
     }[];
     
     @ApiProperty()

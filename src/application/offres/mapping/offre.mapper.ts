@@ -5,6 +5,7 @@ export function mapToFindOfferDto(offer: Offre): FindOfferDto {
     return {
         id: offer.id,
         key: offer.cle_composee,
+        duplicateKey: offer.cle_doublon,
         type: offer.type,
         prix: offer.prix,
         urlScraped: offer.url_scraped,
@@ -33,6 +34,14 @@ export function mapToFindOfferDto(offer: Offre): FindOfferDto {
                 nb_jours: offreDate.nb_jours,
                 mois_voyage: offreDate.mois_voyage,
                 annee_voyage: offreDate.annee_voyage,
+            }))
+        : [],
+        offrePrixHistorique: offer.offresPrixHistorique
+            ? offer.offresPrixHistorique.getItems().map(offrePrixHistorique => ({
+                id: offrePrixHistorique.id,
+                prix: offrePrixHistorique.prix,
+                devise: offrePrixHistorique.devise,
+                date_scraped: offrePrixHistorique.date_scraped.toString(),
             }))
         : [],
     }
