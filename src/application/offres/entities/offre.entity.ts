@@ -13,6 +13,9 @@ export class Offre {
     cle_composee: string;
 
     @Property()
+    cle_doublon: string;
+
+    @Property()
     package: string;
 
     @Property()

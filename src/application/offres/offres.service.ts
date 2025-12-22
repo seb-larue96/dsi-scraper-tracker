@@ -90,6 +90,7 @@ export class OffresService {
   private mapOffer(item: any, em: EntityManager): Offre {
     const offer = em.create(Offre, {
       cle_composee: item.key,
+      cle_doublon: item.duplicateKey,
       package: item.package,
       type: item.type,
       prix: item.prix,
