@@ -22,14 +22,11 @@ async function bootstrap() {
   await logger.info('Application starting...', context);
   await logger.info('Feature flags configuration:', context);
 
-  Object.entries(FeatureFlags).forEach(([flagName, flagValue]) => {
-    const rawEnv =
-      FeatureFlagEnv[flagName as keyof typeof FeatureFlagEnv] ?? 'undefined';
+  Object.entries(FeatureFlags).forEach(([flagName, flagFn]) => {
+    const value = (flagFn as () => boolean)();
+    const rawEnv = FeatureFlagEnv[flagName as keyof typeof FeatureFlagEnv]?.() ?? 'undefined';
 
-    logger.info(
-      `• ${flagName} = ${flagValue} (env: ${rawEnv})`,
-      context,
-    );
+    logger.info(`${flagName} = ${value} (env: ${rawEnv})`, context);
   });
 
   configureApp(app);
