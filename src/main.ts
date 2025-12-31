@@ -17,24 +17,10 @@ function configureApp(app: INestApplication): void {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
-  const configService = app.get(ConfigService);
   const logger = app.get(LoggerService);
   const context = 'NestFactory';
 
   await logger.info('Application starting...', context);
-
-  const featureFlags = configService.get<Record<string, boolean>>('featureFlags');
-
-  await logger.info('Feature flags configuration:', context);
-
-  Object.entries(featureFlags ?? {}).forEach(([key, value]) => {
-    const rawEnv = process.env[`FEATURE_${key}`] ?? 'undefined';
-
-    logger.info(
-      `${key} = ${value} (env: ${rawEnv})`,
-      context,
-    );
-  });
 
   configureApp(app);
 

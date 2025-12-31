@@ -12,7 +12,7 @@ import featureFlagsConfig from './config/feature-flags.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [featureFlagsConfig]}),
+    ConfigModule.forRoot({ isGlobal: true }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     MikroOrmModule.forFeature([Log]),
     ScheduleModule.forRoot(),
