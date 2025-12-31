@@ -1,11 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { LoggerService } from './logger/logger.service';
 import { configureSwagger } from './config/swagger.config';
 import { configureGlobalInterceptors } from './config/interceptor.config';
 import { configureGlobalFilters } from './config/filter.config';
-import { FeatureFlags, FeatureFlagEnv } from './config/feature-flags.config';
+
 
 function configureApp(app: INestApplication): void {
   configureSwagger(app);
@@ -16,17 +17,23 @@ function configureApp(app: INestApplication): void {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
+  const configService = app.get(ConfigService);
   const logger = app.get(LoggerService);
   const context = 'NestFactory';
 
   await logger.info('Application starting...', context);
+
+  const featureFlags = configService.get<Record<string, boolean>>('featureFlags');
+
   await logger.info('Feature flags configuration:', context);
 
-  Object.entries(FeatureFlags).forEach(([flagName, flagFn]) => {
-    const value = (flagFn as () => boolean)();
-    const rawEnv = FeatureFlagEnv[flagName as keyof typeof FeatureFlagEnv]?.() ?? 'undefined';
+  Object.entries(featureFlags ?? {}).forEach(([key, value]) => {
+    const rawEnv = process.env[`FEATURE_${key}`] ?? 'undefined';
 
-    logger.info(`${flagName} = ${value} (env: ${rawEnv})`, context);
+    logger.info(
+      `${key} = ${value} (env: ${rawEnv})`,
+      context,
+    );
   });
 
   configureApp(app);

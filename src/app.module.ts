@@ -8,10 +8,11 @@ import { ApplicationModule } from './application/application.module';
 import { LoggerService } from './logger/logger.service';
 import { Log } from './logger/entities/log.entity';
 import { TasksService } from './application/tasks/tasks.service';
+import featureFlagsConfig from './config/feature-flags.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, load: [featureFlagsConfig]}),
     MikroOrmModule.forRoot(mikroOrmConfig),
     MikroOrmModule.forFeature([Log]),
     ScheduleModule.forRoot(),
