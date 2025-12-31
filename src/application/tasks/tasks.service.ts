@@ -9,7 +9,7 @@ export class TasksService {
 
     constructor(private readonly offresService: OffresService, private readonly logger: LoggerService) {}
 
-    @Cron(CronExpression.EVERY_HOUR, { disabled: !FeatureFlags.FETCH_AND_STORE_CRON })
+    @Cron(CronExpression.EVERY_5_MINUTES, { disabled: !FeatureFlags.FETCH_AND_STORE_CRON })
     async cronFetchAndStore() {
         await this.logger.info('Starting scheduled fetchAndStore()', this.context);
         try {

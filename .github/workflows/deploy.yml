@@ -20,6 +20,7 @@ jobs:
       API_URL: ${{ vars.API_URL }}
       NETWORK_NAME: ${{ vars.NETWORK_NAME }}
       DOMAIN: ${{ vars.DOMAIN }}
+      FEATURE_FETCH_AND_STORE_CRON: ${{ vars.FEATURE_FETCH_AND_STORE_CRON }}
 
     steps:
       - name: Checkout repository
