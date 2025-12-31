@@ -16,7 +16,7 @@ export class OffreDate {
     date_retour?: string;
 
     @Property()
-    nb_jours: number;
+    nb_jours: string;
 
     @Property({ nullable: true })
     mois_voyage?: string;

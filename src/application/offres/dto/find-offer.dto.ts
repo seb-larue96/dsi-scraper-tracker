@@ -30,7 +30,7 @@ export class FindOfferDto {
         id: number;
         date_depart?: string;
         date_retour?: string;
-        nb_jours: number;
+        nb_jours: string;
         mois_voyage?: string;
         annee_voyage?: string;
     }[];
