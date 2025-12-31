@@ -443,13 +443,13 @@
         },
         "nb_jours": {
           "name": "nb_jours",
-          "type": "int",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": null,
-          "mappedType": "integer"
+          "length": 255,
+          "mappedType": "string"
         },
         "mois_voyage": {
           "name": "mois_voyage",
