@@ -2,7 +2,7 @@ import { Collection, Entity, OneToMany, PrimaryKey, Property } from "@mikro-orm/
 import { Destination } from "src/application/destinations/entities/destination.entity";
 import { Hotel } from "src/application/hotels/entities/hotel.entity";
 import { OffreDate } from "src/application/offres_dates/entities/offre_date.entity";
-import { OffresPrixHistorique } from "src/application/offres_prix_historique/entities/offres_prix_historique.entity";
+import { OffrePrixHistorique } from "src/application/offres_prix_historique/entities/offres_prix_historique.entity";
 
 @Entity()
 export class Offre {
@@ -51,6 +51,6 @@ export class Offre {
     @OneToMany(() => OffreDate, offreDate => offreDate.offre)
     offreDates = new Collection<OffreDate>(this);
 
-    @OneToMany(() => OffresPrixHistorique, offresPrixHistorique => offresPrixHistorique.offre)
-    offresPrixHistorique = new Collection<OffresPrixHistorique>(this);
+    @OneToMany(() => OffrePrixHistorique, offrePrixHistorique => offrePrixHistorique.offre)
+    offrePrixHistorique = new Collection<OffrePrixHistorique>(this);
 }

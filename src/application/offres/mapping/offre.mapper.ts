@@ -36,8 +36,8 @@ export function mapToFindOfferDto(offer: Offre): FindOfferDto {
                 annee_voyage: offreDate.annee_voyage,
             }))
         : [],
-        offrePrixHistorique: offer.offresPrixHistorique
-            ? offer.offresPrixHistorique.getItems().map(offrePrixHistorique => ({
+        offrePrixHistorique: offer.offrePrixHistorique
+            ? offer.offrePrixHistorique.getItems().map(offrePrixHistorique => ({
                 id: offrePrixHistorique.id,
                 prix: offrePrixHistorique.prix,
                 devise: offrePrixHistorique.devise,

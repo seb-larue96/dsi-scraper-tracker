@@ -12,6 +12,7 @@ import { TokenResponseDto } from 'src/common/dto/token-reponse.dto';
 import { Destination } from '../destinations/entities/destination.entity';
 import { Hotel } from '../hotels/entities/hotel.entity';
 import { OffreDate } from '../offres_dates/entities/offre_date.entity';
+import { OffrePrixHistorique } from '../offres_prix_historique/entities/offres_prix_historique.entity';
 
 @Injectable()
 export class OffresService {
@@ -105,6 +106,7 @@ export class OffresService {
     if (item.destinations?.length) this.mapDestinations(item.destinations, offer, em);
     if (item.hotels?.length) this.mapHotels(item.hotels, offer, em);
     if (item.offresDates?.length) this.mapOffreDates(item.offresDates, offer, em);
+    if (item.offresPrixHistorique?.length) this.mapOffrePrixHistorique(item.offresPrixHistorique, offer, em);
 
     return offer;
   }
@@ -143,6 +145,18 @@ export class OffresService {
         offre: offer,
       });
       offer.offreDates.add(offreDate);
+    });
+  }
+
+  private mapOffrePrixHistorique(offresPrixHistorique: OffrePrixHistorique[], offer: Offre, em: EntityManager): void {
+    offresPrixHistorique.forEach(prixHistoriqueItem => {
+      const offrePrixHistorique = em.create(OffrePrixHistorique, {
+        prix: prixHistoriqueItem.prix,
+        devise: prixHistoriqueItem.devise,
+        date_scraped: prixHistoriqueItem.date_scraped ? new Date(prixHistoriqueItem.date_scraped) : new Date(),
+        offre: offer
+      });
+      offer.offrePrixHistorique.add(offrePrixHistorique);  
     });
   }
 }
